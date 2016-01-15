@@ -3,4 +3,8 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="sign_in">Sign in</string>
+    <string name="logout">Logout</string>
+
+    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_email">This email is invalid</string>
 </resources>
