@@ -2,11 +2,13 @@ package com.newhorizon.showmetheway;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SP_FILE = "com.newhorizon.showmetheway.SP";
@@ -28,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
+
+        FloatingActionButton request = (FloatingActionButton) findViewById(R.id.request_route);
+        request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Handle request
+            }
+        });
     }
 
     @Override
