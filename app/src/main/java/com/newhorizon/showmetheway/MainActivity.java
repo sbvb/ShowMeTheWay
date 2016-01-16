@@ -31,16 +31,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
-
-        final Context ctx = this;
-
-        FloatingActionButton request = (FloatingActionButton) findViewById(R.id.request_route);
-        request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ctx, RequestActivity.class));
-            }
-        });
     }
 
     @Override
@@ -59,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
+            case R.id.request_button:
+                startActivity(new Intent(this, RequestActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

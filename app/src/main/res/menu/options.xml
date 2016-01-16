@@ -6,4 +6,9 @@
         android:id="@+id/logout_button"
         android:title="@string/logout"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/request_button"
+        android:icon="@android:drawable/ic_dialog_map"
+        app:showAsAction="ifRoom"/>
 </menu>
