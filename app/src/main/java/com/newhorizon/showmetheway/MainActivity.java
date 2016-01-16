@@ -43,15 +43,19 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout_button:
-                SharedPreferences.Editor editor = sp.edit();
-                editor.remove("EMAIL");
-                editor.apply();
-
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+                logout();
             case R.id.request_button:
                 startActivity(new Intent(this, RequestActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("EMAIL");
+        editor.apply();
+
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }
