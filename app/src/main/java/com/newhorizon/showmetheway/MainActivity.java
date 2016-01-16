@@ -1,45 +1,52 @@
 package com.newhorizon.showmetheway;
 
-import android.app.SharedElementCallback;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SP_FILE = "com.newhorizon.showmetheway.SP";
 
+    private SharedPreferences sp;
     private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        SharedPreferences sp = getSharedPreferences(SP_FILE, MODE_PRIVATE);
+        sp = getSharedPreferences(SP_FILE, MODE_PRIVATE);
         email = sp.getString("EMAIL", null);
 
         if(email == null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
+    }
 
-        final SharedPreferences.Editor editor = sp.edit();
-        final Context ctx = this;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options, menu);
+        return true;
+    }
 
-        Button logout = (Button) findViewById(R.id.logout_button);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout_button:
+                SharedPreferences.Editor editor = sp.edit();
                 editor.remove("EMAIL");
                 editor.apply();
 
-                startActivity(new Intent(ctx, LoginActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
-            }
-        });
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
