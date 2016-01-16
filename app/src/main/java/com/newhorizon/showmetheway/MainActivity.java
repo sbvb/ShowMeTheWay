@@ -1,5 +1,6 @@
 package com.newhorizon.showmetheway;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
@@ -31,11 +32,13 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+        final Context ctx = this;
+
         FloatingActionButton request = (FloatingActionButton) findViewById(R.id.request_route);
         request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle request
+                startActivity(new Intent(ctx, RequestActivity.class));
             }
         });
     }
