@@ -23,9 +23,8 @@ public class MainActivity extends AppCompatActivity {
         email = sp.getString("EMAIL", null);
 
         if(email == null) {
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
-            Intent login = new Intent(this, LoginActivity.class);
-            startActivity(login);
         }
 
         final SharedPreferences.Editor editor = sp.edit();
