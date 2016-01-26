@@ -7,7 +7,14 @@
     <string name="routes_list">Routes List</string>
     <string name="draw_route">Draw Route</string>
 
+    <string name="missing_route">Missing route!</string>
+    <string name="route_nickname">Add a nickname</string>
+    <string name="OK">OK</string>
+    <string name="save">Save</string>
+
+    <string name="error_empty_route">Please draw a route by adding at least 2 markers over the map</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">This email is invalid</string>
+
     <string name="title_activity_maps">Map</string>
 </resources>

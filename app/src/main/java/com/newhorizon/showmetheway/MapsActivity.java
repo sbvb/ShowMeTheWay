@@ -1,10 +1,16 @@
 package com.newhorizon.showmetheway;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +27,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private List<LatLng> route = new ArrayList<LatLng>();
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +38,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        context = this;
+
         FloatingActionButton save = (FloatingActionButton) findViewById(R.id.add_route);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                if (route.size() < 2) {
+                    builder.setMessage(R.string.error_empty_route);
+                    builder.setTitle(R.string.missing_route);
+                    builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing, dismiss dialog
+                        }
+                    });
+                } else {
+                    LayoutInflater inflater = getLayoutInflater();
+                    builder.setTitle(R.string.route_nickname);
+                    builder.setView(inflater.inflate(R.layout.save_route_dialog, null));
+                    builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO handle saving route
+
+                            finish();
+                            startActivity(new Intent(context, MainActivity.class));
+                        }
+                    });
+                }
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
