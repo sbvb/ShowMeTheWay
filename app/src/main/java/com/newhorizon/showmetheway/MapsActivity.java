@@ -20,7 +20,7 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private List<LatLng> route = new ArrayList<>();
+    private List<LatLng> route = new ArrayList<LatLng>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO handle route creation
+                
             }
         });
 
@@ -43,7 +43,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO handle routes clearing
+                route = new ArrayList<LatLng>();
+                mMap.clear();
             }
         });
     }
