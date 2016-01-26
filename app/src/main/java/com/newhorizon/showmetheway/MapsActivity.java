@@ -38,6 +38,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO handle route creation
             }
         });
+
+        FloatingActionButton clear = (FloatingActionButton) findViewById(R.id.clr_route);
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO handle routes clearing
+            }
+        });
     }
 
 
