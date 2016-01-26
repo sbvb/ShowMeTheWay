@@ -4,7 +4,7 @@
     <string name="password">Password</string>
     <string name="sign_in">Sign in</string>
     <string name="logout">Logout</string>
-    <string name="requests_list">Requests List</string>
+    <string name="routes_list">Routes List</string>
     <string name="draw_route">Draw Route</string>
 
     <string name="error_field_required">This field is required</string>
