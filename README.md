@@ -10,7 +10,7 @@ that can be viewed over Google Maps.
 To enter the "room", one should ask and the other should agree.
 * Once inside a room, one can send his/her GPS information to the other, to 
 help create an specific path.
-* Optionally, inside the room that can exist a chat between room members
+* Optionally, inside the room can exist a chat between room members
 
 
 
