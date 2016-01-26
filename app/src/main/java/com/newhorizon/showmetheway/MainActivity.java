@@ -1,15 +1,12 @@
 package com.newhorizon.showmetheway;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SP_FILE = "com.newhorizon.showmetheway.SP";
@@ -44,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logout_button:
                 logout();
-            case R.id.request_button:
-                startActivity(new Intent(this, RequestActivity.class));
+            case R.id.draw_route_button:
+                startActivity(new Intent(this, MapsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

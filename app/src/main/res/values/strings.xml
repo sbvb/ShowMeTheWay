@@ -5,8 +5,9 @@
     <string name="sign_in">Sign in</string>
     <string name="logout">Logout</string>
     <string name="requests_list">Requests List</string>
-    <string name="request_route">Request a Route</string>
+    <string name="draw_route">Draw Route</string>
 
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">This email is invalid</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
