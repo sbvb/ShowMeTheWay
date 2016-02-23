@@ -7,6 +7,14 @@
     android:fitsSystemWindows="true"
     tools:context="com.newhorizon.showmetheway.MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_layout"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical">
+    </LinearLayout>
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
