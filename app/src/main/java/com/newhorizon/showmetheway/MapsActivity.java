@@ -15,6 +15,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,6 +30,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,28 +98,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 String route_name = et_route_name.getText().toString();
                                 String route_crds = "";
+                                String route_owner = sp.getString("EMAIL", null);
 
                                 for (int i = 0; i < route.size(); i++) {
                                     route_crds += route.get(i).toString() + ";;";
                                 }
 
-                                int aux = 0;
-                                while (true) {
-                                    String route = sp.getString("ROUTE_NAME;" + aux, null);
-                                    if (route == null) {
-                                        break;
-                                    } else {
-                                        aux += 1;
-                                    }
-                                }
-
-                                SharedPreferences.Editor editor = sp.edit();
-                                editor.putString("ROUTE_NAME;" + aux, route_name);
-                                editor.putString("ROUTE_CRDS;" + aux, route_crds);
-                                editor.apply();
-
-                                finish();
-                                startActivity(new Intent(context, MainActivity.class));
+                                insertRoute(route_name, route_crds, route_owner);
                             }
                         });
                     }
@@ -131,6 +124,56 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    private void savingSuccessfull() {
+        finish();
+        startActivity(new Intent(context, MainActivity.class));
+    }
+
+    private void savingFailed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.error_saving_failed);
+        builder.setTitle(R.string.error_saving_fail_title);
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing, dismiss dialog
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void insertRoute(String name, String crds, String owner) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://54.233.119.112:8080/axis2/services/HelloClass/insert_route?";
+        try {
+            url = url + "nickname=" + URLEncoder.encode(name, "UTF-8");
+            url = url + "&coords=" + URLEncoder.encode(crds, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        url = url + "&owner=" + owner;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.contains("Route Saved")) {
+                            savingSuccessfull();
+                        } else {
+                            savingFailed();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                savingFailed();
+            }
+        });
+
+        queue.add(stringRequest);
+    }
 
     /**
      * Manipulates the map once available.

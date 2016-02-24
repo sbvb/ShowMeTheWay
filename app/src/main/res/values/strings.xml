@@ -20,4 +20,7 @@
 
     <string name="error_invalid_login">Wrong username or password!</string>
     <string name="error_invalid_login_title">Login Error</string>
+
+    <string name="error_saving_failed">Couldnt save route!</string>
+    <string name="error_saving_fail_title">Saving Error</string>
 </resources>
