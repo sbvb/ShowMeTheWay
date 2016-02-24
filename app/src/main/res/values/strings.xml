@@ -17,4 +17,7 @@
     <string name="error_invalid_email">This email is invalid</string>
 
     <string name="title_activity_maps">Map</string>
+
+    <string name="error_invalid_login">Wrong username or password!</string>
+    <string name="error_invalid_login_title">Login Error</string>
 </resources>
