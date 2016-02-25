@@ -1,0 +1,67 @@
+-- Table: tb_users
+
+-- DROP TABLE tb_users;
+
+CREATE TABLE tb_users
+(
+  id integer NOT NULL,
+  username character varying NOT NULL,
+  password character varying NOT NULL,
+  CONSTRAINT tb_users_pk PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE tb_users
+  OWNER TO hhenriqu;
+
+==============================================
+-- Sequence: users_id_seq
+
+-- DROP SEQUENCE users_id_seq;
+
+CREATE SEQUENCE users_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE users_id_seq
+  OWNER TO hhenriqu;
+
+==============================================
+-- Table: tb_routes
+
+-- DROP TABLE tb_routes;
+
+CREATE TABLE tb_routes
+(
+  id integer NOT NULL,
+  owner integer NOT NULL,
+  nickname character varying NOT NULL,
+  coords character varying NOT NULL,
+  CONSTRAINT tb_routes_pk PRIMARY KEY (id),
+  CONSTRAINT tb_routes_owner FOREIGN KEY (owner)
+      REFERENCES tb_users (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE tb_routes
+  OWNER TO hhenriqu;
+
+=============================================
+-- Sequence: routes_id_seq
+
+-- DROP SEQUENCE routes_id_seq;
+
+CREATE SEQUENCE routes_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 7
+  CACHE 1;
+ALTER TABLE routes_id_seq
+  OWNER TO hhenriqu;
+
