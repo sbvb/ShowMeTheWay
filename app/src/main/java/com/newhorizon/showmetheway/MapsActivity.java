@@ -224,11 +224,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                route.add(latLng);
+
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
                 markerOptions.draggable(true);
+                int value = route.size()-1;
+                markerOptions.snippet("ID=" + value);
                 mMap.addMarker(markerOptions);
-                route.add(latLng);
+
                 PolylineOptions polylineOptions = new PolylineOptions();
                 polylineOptions.addAll(route);
                 mMap.addPolyline(polylineOptions);
