@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -78,12 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             route_crds += route.get(i).toString() + ";;";
                         }
 
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putString("ROUTE_CRDS;" + mode, route_crds);
-                        editor.apply();
-
-                        finish();
-                        startActivity(new Intent(context, MainActivity.class));
+                        updateRoute(mode, route_crds);
                     } else {
                         LayoutInflater inflater = getLayoutInflater();
                         builder.setTitle(R.string.route_nickname);
@@ -175,6 +172,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         queue.add(stringRequest);
     }
 
+    private void updateRoute(int id, String crds) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://54.233.119.112:8080/axis2/services/HelloClass/update_route?";
+        try {
+            url = url + "id=" + id;
+            url = url + "&coords=" + URLEncoder.encode(crds, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.contains("Route Saved")) {
+                            savingSuccessfull();
+                        } else {
+                            savingFailed();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                savingFailed();
+            }
+        });
+
+        queue.add(stringRequest);
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -191,28 +218,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SharedPreferences sp = getSharedPreferences(SP_FILE, MODE_PRIVATE);
         int mode = sp.getInt("MODE_MAPS", -1);
         if (mode != -1) {
-            String route_crds = sp.getString("ROUTE_CRDS;" + mode, null);
-            route_crds = route_crds.substring(0, route_crds.length() - 2);
-            String[] parts = route_crds.split(";;");
-            for (int i = 0; i < parts.length; i++) {
-                String value = parts[i].substring(10, parts[i].length() - 1);
-                String[] latLng = value.split(",");
-                double latitude = Double.parseDouble(latLng[0]);
-                double longitude = Double.parseDouble(latLng[1]);
-
-                LatLng location = new LatLng(latitude, longitude);
-                route.add(location);
-
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(location);
-                markerOptions.draggable(true);
-                markerOptions.snippet("ID=" + i);
-                mMap.addMarker(markerOptions);
-            }
-
-            PolylineOptions polylineOptions = new PolylineOptions();
-            polylineOptions.addAll(route);
-            mMap.addPolyline(polylineOptions);
+            getRoute(mode);
         }
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -261,5 +267,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addPolyline(polylineOptions);
             }
         });
+    }
+
+    private void requestFailed() {
+
+    }
+
+    private void getRoute(int mode) {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://54.233.119.112:8080/axis2/services/HelloClass/request_route?id=" + mode;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        String[] partsTotal = response.split("<ns:return>");
+                        String route_crds = partsTotal[1].replace("</ns:return>","").replace("amp;", "").replace("</ns:request_routeResponse>", "");
+                        route_crds = route_crds.substring(0, route_crds.length() - 2);
+                        String[] parts = route_crds.split(";;");
+                        for (int i = 0; i < parts.length; i++) {
+                            String value = parts[i].substring(10, parts[i].length() - 1);
+                            String[] latLng = value.split(",");
+                            double latitude = Double.parseDouble(latLng[0]);
+                            double longitude = Double.parseDouble(latLng[1]);
+
+                            LatLng location = new LatLng(latitude, longitude);
+                            route.add(location);
+
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(location);
+                            markerOptions.draggable(true);
+                            markerOptions.snippet("ID=" + i);
+                            mMap.addMarker(markerOptions);
+                        }
+
+                        PolylineOptions polylineOptions = new PolylineOptions();
+                        polylineOptions.addAll(route);
+                        mMap.addPolyline(polylineOptions);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                requestFailed();
+            }
+        });
+
+        queue.add(stringRequest);
     }
 }
